@@ -70,8 +70,10 @@ Caliz-de-Fuego---Nand2Tetris/
 
 ### 2️⃣ En el `VM Emulator`
 - Verifica que la velocidad de ejecución esté en `Fast`
-- Presiona el botón ⏩ (junto a la velocidad)
+- Presiona el botón ⏩ `Run` (junto a la velocidad)
 - Habilita la opción del teclado para poder jugar
+
+Para volver a jugar presionas ⏮️ `Reset` y nuevamente ⏩ `Run`
 
 ---
 
