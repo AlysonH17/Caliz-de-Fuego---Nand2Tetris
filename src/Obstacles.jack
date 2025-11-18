@@ -1,0 +1,87 @@
+// Obstacles.jack
+
+class Obstacles {
+
+    // picks random border cells and marks them as obstacles, drawing a hollow circle in each chosen position
+    function void drawBorderObstacles(Array maze, Array obstacles, PseudoRand rng, int baseX, int baseY, int bw, int bh, int xCount, int yCount) {
+        var int placed, max, rx, ry, cx, cy, rad, isBorder;
+        var Array rowObs;
+
+        let max = 10;
+        let placed = 0;
+
+        let rad = bw / 4;
+
+        do Screen.setColor(true);
+
+        while (placed < max) {
+
+            let rx = rng.next(xCount);
+            let ry = rng.next(yCount);
+
+            // ensures rx stays within [0, xCount-1]
+            while (~(rx < xCount)) {
+                let rx = rx - xCount;
+            }
+
+            // ensures ry stays within [0, yCount-1]
+            while (~(ry < yCount)) {
+                let ry = ry - yCount;
+            }
+
+            // checks if (rx,ry) lies on the maze border
+            let isBorder = 0;
+            if (rx = 0) { let isBorder = 1; }
+            if (rx = xCount - 1) { let isBorder = 1; }
+            if (ry = 0) { let isBorder = 1; }
+            if (ry = yCount - 1) { let isBorder = 1; }
+
+            if (isBorder = 1) {
+
+                // skip the start cell (0,0)
+                if ((rx = 0) & (ry = 0)) {
+                    // skip
+                } else {
+
+                    // skip the end cell (xCount-1, 0)
+                    if ((rx = xCount - 1) & (ry = 0)) {
+                        // skip
+                    } else {
+
+                        // looks in obstacles[ry][rx] and places a new obstacle only if that cell is still empty
+                        let rowObs = obstacles[ry];
+                        if (rowObs[rx] = 0) {
+                            let rowObs[rx] = 1;
+
+                            // computes pixel center of the chosen cell
+                            let cx = baseX + (rx * bw) + (bw / 2);
+                            let cy = baseY + (ry * bh) + (bh / 2);
+                            
+                            do Obstacles.drawHollowCircle(cx, cy, rad);
+
+                            let placed = placed + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        return;
+    }
+
+    // draws a circle outline and clears the inside to create a hollow shape
+    function void drawHollowCircle(int cx, int cy, int radius){
+        if(radius < 1){
+            return;
+        }
+        do Screen.setColor(true);
+        do Screen.drawCircle(cx, cy, radius);
+        if(radius > 1){
+            do Screen.setColor(false);
+            do Screen.drawCircle(cx, cy, radius - 1);
+            do Screen.setColor(true);
+        }
+        return;
+    }
+
+}

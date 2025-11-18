@@ -1,0 +1,550 @@
+class Questions {
+
+    static int questionIndex;
+
+    // picks a random unused question, shows it on the left panel and checks if the player's answer is correct
+    function boolean askQuestion(int score, PseudoRand rng, Array usedQuestions) {
+        var char key;
+        var boolean answered, correct, found;
+        var int correctKey, q;
+
+        let found = false;
+
+        // keeps picking a random index q until it finds one that is still marked as unused in usedQuestions[q]
+        while (~found) {
+            let q = rng.next(15); 
+            if (usedQuestions[q] = 0) {
+                let found = true;
+            }
+        }
+        let usedQuestions[q] = 1;
+
+        let answered = false;
+        let correct = false;
+
+        // clears the left panel area before drawing the next question
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 0, 100, 255);
+        do Screen.setColor(true);
+
+        // calls the question method that matches index q and stores the expected key code in correctKey
+        if (q = 0) {
+            let correctKey = question1();
+        }
+        if (q = 1) {
+            let correctKey = question2();
+        }
+        if (q = 2) {
+            let correctKey = question3();
+        }
+        if (q = 3) {
+            let correctKey = question4();
+        }
+        if (q = 4) {
+            let correctKey = question5();
+        }
+        if (q = 5) {
+            let correctKey = question6();
+        }
+        if (q = 6) {
+            let correctKey = question7();
+        }
+        if (q = 7) {
+            let correctKey = question8();
+        }
+        if (q = 8) {
+            let correctKey = question9();
+        }
+        if (q = 9) {
+            let correctKey = question10();
+        }
+        if (q = 10) {
+            let correctKey = question11();
+        }
+        if (q = 11) {
+            let correctKey = question12();
+        }
+        if (q = 12) {
+            let correctKey = question13();
+        }
+        if (q = 13) {
+            let correctKey = question14();
+        }
+        if (q = 14) {
+            let correctKey = question15();
+        }
+        if (q = 15) {
+            let correctKey = question16();
+        }
+
+        // waits until the player presses one of '1'..'4', then compares the pressed key with correctKey
+        while(~answered) {
+            let key = Keyboard.keyPressed();
+
+            if(~(key = 0)) {
+
+                // only accept number keys 1 to 4 (ASCII 49..52) as valid answers
+                if ((key = 49) | (key = 50) | (key = 51) | (key = 52)) {
+                    let answered = true;
+
+                    if (key = correctKey) {
+                        let correct = true;
+                    } else {
+                        let correct = false;
+                    }
+
+                    // waits until the player releases the key before continuing
+                    while(~(Keyboard.keyPressed() = 0)) {
+                    }
+                }
+            }
+        }
+
+        // if the answer was correct, show "Continue" on the panel and let the game resume
+        if (correct) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(0, 0, 100, 255);
+            do Screen.setColor(true);
+
+            do Output.moveCursor(4, 3);
+            do Output.printString("Continue");
+
+            return true;
+        }
+
+        // if the answer was wrong, clear the screen, show the final score and halt the game
+        do Screen.clearScreen();
+        do Output.moveCursor(11, 28);
+        do Output.printString("PERDISTE :(");
+        do Output.moveCursor(13, 28);
+        do Output.printString("Score:");
+        do Output.moveCursor(13, 35);
+        do Output.printInt(score);
+            
+        do Sys.halt();
+
+        return false; 
+    }
+
+    // each questionN method prints a multiple-choice question and returns the ASCII code of the correct option key
+    method int question1(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Cual es el");
+        do Output.moveCursor(2, 1);
+        do Output.printString("elemento");
+        do Output.moveCursor(3, 1);
+        do Output.printString("quimico mas");
+        do Output.moveCursor(4, 1);
+        do Output.printString("abundante");
+        do Output.moveCursor(5, 1);
+        do Output.printString("en el");
+        do Output.moveCursor(6, 1);
+        do Output.printString("universo");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Helio");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Oxigeno");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Hidrogeno");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Carbono");   
+
+        return 51;  
+    }
+
+    method int question2(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("En que pais");
+        do Output.moveCursor(2, 1);
+        do Output.printString("se encuentra");
+        do Output.moveCursor(3, 1);
+        do Output.printString("la ciudad");
+        do Output.moveCursor(4, 1);
+        do Output.printString("antigua de");
+        do Output.moveCursor(5, 1);
+        do Output.printString("Petra");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Egipto");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Jordania");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Grecia");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Siria");   
+
+        return 50;  
+    }
+
+    method int question3(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Que rio");
+        do Output.moveCursor(2, 1);
+        do Output.printString("fluye a");
+        do Output.moveCursor(3, 1);
+        do Output.printString("traves de");
+        do Output.moveCursor(4, 1);
+        do Output.printString("Londres");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Tamesis");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Sena");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Ebro");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Nilo");   
+
+        return 49;  
+    }
+
+    method int question4(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("En que ano");
+        do Output.moveCursor(2, 1);
+        do Output.printString("termino la");
+        do Output.moveCursor(3, 1);
+        do Output.printString("2da guerra");
+        do Output.moveCursor(4, 1);
+        do Output.printString("mundial");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.1939");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.1945");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.1956");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.1947");   
+
+        return 50;  
+    }
+
+    method int question5(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("En que");
+        do Output.moveCursor(2, 1);
+        do Output.printString("continente");
+        do Output.moveCursor(3, 1);
+        do Output.printString("se formo la");
+        do Output.moveCursor(4, 1);
+        do Output.printString("civilizacion");
+        do Output.moveCursor(5, 1);
+        do Output.printString("sumeria");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Asia");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Africa");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Europa");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.America");   
+
+        return 49;  
+    }
+
+    method int question6(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Que planeta");
+        do Output.moveCursor(2, 1);
+        do Output.printString("del sistema");
+        do Output.moveCursor(3, 1);
+        do Output.printString("solar tiene");
+        do Output.moveCursor(4, 1);
+        do Output.printString("el dia mas");
+        do Output.moveCursor(5, 1);
+        do Output.printString("corto");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Mercurio");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Neptuno");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Saturno");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Jupiter");   
+
+        return 52;  
+    }
+
+    method int question7(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Que estudia");
+        do Output.moveCursor(2, 1);
+        do Output.printString("la");
+        do Output.moveCursor(3, 1);
+        do Output.printString("Orografia");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Minerales");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Fondo mar");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Montanas");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Aves");   
+
+        return 51;  
+    }
+
+    method int question8(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Cuantos");
+        do Output.moveCursor(2, 1);
+        do Output.printString("huesos tiene");
+        do Output.moveCursor(3, 1);
+        do Output.printString("una mano");
+        do Output.moveCursor(4, 1);
+        do Output.printString("humana");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.14");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.22");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.24");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.27");   
+
+        return 52;  
+    }
+
+    method int question9(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Como se");
+        do Output.moveCursor(2, 1);
+        do Output.printString("llama el");
+        do Output.moveCursor(3, 1);
+        do Output.printString("punto");
+        do Output.moveCursor(4, 1);
+        do Output.printString("interior de");
+        do Output.moveCursor(5, 1);
+        do Output.printString("la tierra");
+        do Output.moveCursor(6, 1);
+        do Output.printString("donde inicia");
+        do Output.moveCursor(7, 1);
+        do Output.printString("un terremoto");
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("1.Epicentro");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("2.Geocentro");   
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("3.Hipocentro");
+
+        return 51;  
+    }
+
+    method int question10(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("A que le");
+        do Output.moveCursor(2, 1);
+        do Output.printString("teme una");
+        do Output.moveCursor(3, 1);
+        do Output.printString("persona que");
+        do Output.moveCursor(4, 1);
+        do Output.printString("sufre de");
+        do Output.moveCursor(5, 1);
+        do Output.printString("Onirofobia");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Dormir");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Ombligos");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Hospitales");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Orines");
+
+        return 49;  
+    }
+
+    method int question11(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Cuantos");
+        do Output.moveCursor(2, 1);
+        do Output.printString("lados tiene");
+        do Output.moveCursor(3, 1);
+        do Output.printString("un");
+        do Output.moveCursor(4, 1);
+        do Output.printString("endecagono");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.9");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.10");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.11");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.12");
+
+        return 51;  
+    }
+
+    method int question12(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Cual es");
+        do Output.moveCursor(2, 1);
+        do Output.printString("el ultimo");
+        do Output.moveCursor(3, 1);
+        do Output.printString("libro de");
+        do Output.moveCursor(4, 1);
+        do Output.printString("la Biblia");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Apocalipsis");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Genesis");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Levitico");
+
+        return 49;  
+    }
+
+    method int question13(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Cual es");
+        do Output.moveCursor(2, 1);
+        do Output.printString("el pais");
+        do Output.moveCursor(3, 1);
+        do Output.printString("mas pequeno");
+        do Output.moveCursor(4, 1);
+        do Output.printString("del mundo");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Andorra");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Monaco");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Vaticano");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Nauru");
+
+        return 51;  
+    }
+
+    method int question14(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Que ");
+        do Output.moveCursor(2, 1);
+        do Output.printString("compositor");
+        do Output.moveCursor(3, 1);
+        do Output.printString("de musica");
+        do Output.moveCursor(4, 1);
+        do Output.printString("clasica se");
+        do Output.moveCursor(5, 1);
+        do Output.printString("volvio sordo");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Mozart");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Beethoven");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Vivaldi");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.Bach");
+
+        return 50;  
+    }
+
+    method int question15(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Que auto");
+        do Output.moveCursor(2, 1);
+        do Output.printString("utilizan en");
+        do Output.moveCursor(3, 1);
+        do Output.printString("'Volver al");
+        do Output.moveCursor(4, 1);
+        do Output.printString("Futuro'");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Challenger");   
+
+        do Output.moveCursor(9, 1);
+        do Output.printString("2.Mustang");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("3.Ford");
+
+        do Output.moveCursor(11, 1);
+        do Output.printString("4.DeLorean");
+
+        return 52;  
+    }
+
+    method int question16(){
+        do Output.moveCursor(1, 1);
+        do Output.printString("Cual NO");
+        do Output.moveCursor(2, 1);
+        do Output.printString("es una");
+        do Output.moveCursor(3, 1);
+        do Output.printString("maravilla");
+        do Output.moveCursor(4, 1);
+        do Output.printString("del mundo");
+
+        do Output.moveCursor(8, 1);
+        do Output.printString("1.Torre");   
+        do Output.moveCursor(9, 1);
+        do Output.printString("Eiffel");   
+
+        do Output.moveCursor(10, 1);
+        do Output.printString("2.Cristo");  
+        do Output.moveCursor(11, 1);
+        do Output.printString("Redentor");    
+
+        do Output.moveCursor(12, 1);
+        do Output.printString("3.Chichen");
+        do Output.moveCursor(13, 1);
+        do Output.printString("Itza");   
+
+        do Output.moveCursor(14, 1);
+        do Output.printString("4.Machu");
+        do Output.moveCursor(15, 1);
+        do Output.printString("Picchu");   
+
+        return 49;  
+    }
+
+}

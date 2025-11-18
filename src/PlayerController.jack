@@ -1,13 +1,14 @@
 class PlayerController {
 	field Player player;
-	field Array maze;
-	field int blockWidth, blockHeight, xCount, yCount, drawPadding, baseX, baseY;
+	field Array maze, obstacles;
+	field int blockWidth, blockHeight, xCount, yCount, drawPadding, baseX, baseY, score;
 
-	constructor PlayerController new(Player newPlayer, Array newMaze, int xOrigin, int yOrigin,
+	constructor PlayerController new(Player newPlayer, Array newMaze, Array newObstacles, int xOrigin, int yOrigin,
 		int bw, int bh, int xc, int yc, int pad){
 		var int x, y;
 		let player = newPlayer;
 		let maze = newMaze;
+		let obstacles = newObstacles;
 		let blockWidth = bw;
 		let blockHeight = bh;
 		let xCount = xc;
@@ -15,6 +16,7 @@ class PlayerController {
 		let drawPadding = pad;
 		let baseX = xOrigin;
 		let baseY = yOrigin;
+		let score = 0;
 
 		let x = player.getX();
 		let y = player.getY();	
@@ -30,12 +32,21 @@ class PlayerController {
 		return this;
 	}
 
-	method void loop(){
-		var int direction, x, y;
+	method void loop(PseudoRand rng){
+		var int direction, x, y, i;
 		var char key;
+		var Array rowObs, usedQuestions;
 		let key = 0;
 		let x = player.getX();
 		let y = player.getY();
+
+		// usedQuestions[i] is 1 if question i has already been asked; each question is only shown once during the game
+		let usedQuestions = Array.new(16);  
+		let i = 0;
+		while (i < 16) {
+			let usedQuestions[i] = 0;
+			let i = i + 1;
+		}
 
 		while( ( (~(x = (xCount - 1) )) | (~(y = 0)) ) = true){
 			while((key < 130) | (key > 133)){
@@ -66,13 +77,33 @@ class PlayerController {
 				do Screen.setColor(false);
 				do Screen.drawRectangle(baseX + (x * blockWidth) + drawPadding, 
 					baseY + (y * blockHeight) + drawPadding,
-				 baseX + ((x+1) * blockWidth) - drawPadding,
-				  baseY + ((y+1) * blockHeight) - drawPadding );
+				 	baseX + ((x+1) * blockWidth) - drawPadding,
+				  	baseY + ((y+1) * blockHeight) - drawPadding );
 
 				do player.go(direction);
 
 				let x = player.getX();
 				let y = player.getY();	
+
+				/*
+				When the player steps on an obstacle it is called Questions.askQuestion, 
+				if the return is true it is because he answered correctly
+				*/
+				if (isOnObstacle()) {
+					if (Questions.askQuestion(score, rng, usedQuestions)){
+						let rowObs = obstacles[y];
+        				let rowObs[x] = 0;
+
+						let score = score + 100;
+
+						do Output.moveCursor(21, 1);
+						do Output.printString("Score");
+
+						do Output.moveCursor(22, 1);
+						do Output.printInt(score);
+					}  
+				}
+
 				do Screen.setColor(true);
 				do Screen.drawRectangle(baseX + (x * blockWidth) + drawPadding, 
 					baseY + (y * blockHeight) + drawPadding,
@@ -109,8 +140,28 @@ class PlayerController {
 		return false;
 	}
 
+	/*
+	Look in obstacles[y][x] for the player's position and, 
+	if that number is 1, the player is on an obstacle.
+	*/
+	method boolean isOnObstacle() {
+		var int x, y, val;
+		var Array rowObs;
 
+		let x = player.getX();
+		let y = player.getY();
 
+		let rowObs = obstacles[y];   
+		let val = rowObs[x];         
 
+		if (val = 1) {               
+			return true;
+		}
+		return false;
+	}
+
+	method int getScore(){
+		return score;
+	}
 
 }

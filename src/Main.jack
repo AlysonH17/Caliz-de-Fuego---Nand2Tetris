@@ -1,21 +1,21 @@
 class Main {
 	function void main() {
 		var int startRand, temp, temp2, mazeWidth, mazeHeight, xOrigin, yOrigin, bw, bh, padding;
-        var PseudoRand rng;
-        var Array maze, tempArr;
-       	var Player player;
-       	var PlayerController controller;
-       	//maze width indicates number of blocks right to left
-       	//maze height indicates number of blocks top to bottom
-
-       	//Settings
-       	let mazeWidth = 16;
-       	let mazeHeight = 10;
-       	let xOrigin = 104;
-       	let yOrigin = 8;
-       	let bw = 24;
-       	let bh = 24;
-       	let padding = 6;
+		var PseudoRand rng;
+		var Array maze, tempArr, obstacles, tempObs;
+		var Player player;
+		var PlayerController controller;
+		//maze width indicates number of blocks right to left
+		//maze height indicates number of blocks top to bottom
+		
+		//Settings
+		let mazeWidth = 16;
+		let mazeHeight = 10;
+		let xOrigin = 104;
+		let yOrigin = 8;
+		let bw = 24;
+		let bh = 24;
+		let padding = 6;
 
    
 		do PlayHelper.drawPlayHelper();
@@ -38,32 +38,50 @@ class Main {
 			let temp = temp + 1;
 		}
 
+		// creates obstacles array using same logic as maze initialization
+		let obstacles = Array.new(mazeHeight);
+        let temp = 0;
+        while(temp < mazeHeight){
+            let obstacles[temp] = Array.new(mazeWidth);
+            let temp2 = 0;
+            while(temp2 < mazeWidth){
+                let tempObs = obstacles[temp];
+                let tempObs[temp2] = 0;
+                let temp2 = temp2 + 1;
+            }
+            let temp = temp + 1;
+        }
 
 		do MazeGenerator.generate(maze, rng, mazeWidth, mazeHeight);
-		//Array maze, int originX, int originY, int blockWidth, int blockHeight, int xCount, int yCount
 		do MazeDrawer.drawMaze(maze, xOrigin, yOrigin, bw, bh, mazeWidth, mazeHeight);
+
+		do Obstacles.drawBorderObstacles(maze, obstacles, rng, xOrigin, yOrigin, bw, bh, mazeWidth, mazeHeight);
 
 		let player = Player.new(0, 0); //starting point is top left
 
-		let controller = PlayerController.new(player, maze, xOrigin, yOrigin,
-		 bw, bh, mazeWidth, mazeHeight, padding);
+		let controller = PlayerController.new(player, maze, obstacles, xOrigin, yOrigin, bw, bh, mazeWidth, mazeHeight, padding);
 
 		do Main.drawEndPoint(xOrigin, yOrigin, bw, bh, mazeWidth, mazeHeight, 8);
 		
 
-		do controller.loop();
+		do controller.loop(rng); // seed added to control randomness of questions
+
 
 		do Screen.setColor(false);
 		do Screen.drawRectangle(0, 0, 511, 255);
 
+		
 		do Screen.setColor(true);
 		do Output.moveCursor(11, 28);
-		do Output.printString("YOU WON!");
-
-
-
+		do Output.printString("GANASTE!");
+		do Output.moveCursor(13, 28);
+		do Output.printString("Score:");
+		do Output.moveCursor(13, 35);
+		do Output.printInt(controller.getScore());
+			
 		return;
 	}
+
 
 	function void drawEndPoint(int baseX, int baseY, int bw, int bh, int xc, int yc, int rad){
 		do Screen.setColor(true);
@@ -71,6 +89,7 @@ class Main {
 			baseY + (bh / 2), rad);
 		return;
 	}
+
 
 	function int getFirstKeyPressed(){
 		var char key;

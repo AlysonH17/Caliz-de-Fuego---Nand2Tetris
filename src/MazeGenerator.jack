@@ -1,7 +1,7 @@
 class MazeGenerator {
 	
 	function void generate(Array grid, PseudoRand rng, int mazeWidth, int mazeHeight) {
-		do MazeGenerator.carvePassageFrom(0, 0, grid, rng, mazeWidth, mazeHeight);
+		do MazeGenerator.carvePassageFrom(0, 0, grid, rng, mazeWidth, mazeHeight);		
 		return;
 	}
 
